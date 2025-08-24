@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1065707489881",
+    "project_id": "searchmyjob-2ad91",
+    "storage_bucket": "searchmyjob-2ad91.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1065707489881:android:712e3e1719bad38ac3bf48",
+        "android_client_info": {
+          "package_name": "com.searchmyjob"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDFANUa07rW3KGIW9igXhIlGRqwzQyWmg4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

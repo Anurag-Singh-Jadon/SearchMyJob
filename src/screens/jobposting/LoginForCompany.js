@@ -3,14 +3,17 @@ import React, { useState } from 'react'
 import { BG_COLOR, TEXT_COLOR } from '../../utils/Colors'
 import { moderateScale, moderateVerticalScale, scale, verticalScale } from 'react-native-size-matters'
 import CustomTextInput from '../../components/CustomTextInput'
-
 import { useNavigation } from '@react-navigation/native'
+import firestore from '@react-native-firebase/firestore';
+import Loader from '../../components/Loader'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 const LoginForCompany = () => {
   const navigation = useNavigation()
   const [email, setEmail] = useState('')
   const [badEmail, setBadEmail] = useState('')
   const [password, setPassword] = useState('')
   const [badPassword, setBadPassword] = useState('')
+  const [loading, setLoading] = useState(false)
   const validate = () => {
     let emailRegex = /@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
     let validEmail = true
@@ -41,6 +44,66 @@ const LoginForCompany = () => {
     }
     return validEmail && validPass
   }
+  // const loginUser = async () => {
+  //   console.log('Checking');
+  //   setLoading(true);
+
+  //   try {
+  //     // Await the result of the Firestore query.
+  //     // The code will pause here until the data is fetched or an error occurs.
+  //     const querySnapshot = await firestore().collection("job_posters").where("email", "==", email).get();
+  // //     const q = query(collection(db,'job_posters'),where("email", "==", email));
+  // //     const querySnapshot = await getDocs(q);
+  // //     querySnapshot.forEach(doc => {
+  // //   console.log('Data mil raha hai',doc);
+  // // });
+  //     console.log('Data has arrived:', querySnapshot);
+  //     setLoading(false);
+  //     console.log(querySnapshot.docs);
+  //   } catch (error) {
+  //     // If any error occurs in the `try` block, it will be caught here.
+  //     console.log('An error occurred');
+  //     setLoading(false);
+  //     console.log(error);
+  //   }
+  // };
+  const loginUser = () => {
+    setLoading(true);
+    firestore().collection('job_posters').where('email', '==', email).get().then(data => {
+      setLoading(false)
+      console.log(data.docs)
+      if (data.docs.length > 0) {
+        data.docs.forEach(item => {
+          if (item._data.password == password) {
+            setBadEmail("")
+            setBadPassword("")
+            goToNextScreen(item.id, item._data.email, item._data.name)
+          } else {
+            setBadPassword("Wrong Password")
+          }
+        })
+
+      } else {
+        setBadEmail("No User Exists with this Email")
+      }
+    }).catch(error => {
+      setLoading(false)
+      console.log(error)
+    })
+  }
+
+  const goToNextScreen = async (id, email, name) => {
+    await AsyncStorage.setItem("NAME", name)
+    await AsyncStorage.setItem("EMAIL", email)
+    await AsyncStorage.setItem("USER_ID", id)
+    await AsyncStorage.setItem("USER_TYPE", "company")
+    setTimeout(() => {
+      navigation.navigate('DashboardForCompany')
+    }, 2000)
+
+  }
+
+
   return (
     <View style={styles.container}>
       <Image source={require('../../assetsts/images/products.png')} style={styles.logo} />
@@ -65,10 +128,10 @@ const LoginForCompany = () => {
         bad={badPassword != '' ? true : false}
       />
       {badPassword != '' && <Text style={styles.errorMsg}>{badPassword}</Text>}
-      <Text style={styles.forgotPassword}>Forgot Password?</Text>
       <TouchableOpacity style={styles.btn} onPress={() => {
         if (validate()) {
-          Alert.alert('Ready to send data on Server')
+          // Alert.alert('Ready to send data on Server')
+          loginUser()
         }
       }}>
         <Text style={styles.title2}>Login</Text>
@@ -76,7 +139,7 @@ const LoginForCompany = () => {
       <TouchableOpacity onPress={() => navigation.navigate('SignUpForCompany')} style={styles.btn1}>
         <Text style={styles.title1}>Create Account</Text>
       </TouchableOpacity>
-
+      <Loader visible={loading} />
     </View>
   )
 }
@@ -144,3 +207,4 @@ const styles = StyleSheet.create({
   },
 
 })
+
