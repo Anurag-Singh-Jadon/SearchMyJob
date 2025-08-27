@@ -3,11 +3,11 @@ import React from 'react'
 import { moderateScale, moderateVerticalScale, verticalScale } from 'react-native-size-matters'
 import { BG_COLOR } from '../utils/Colors'
 
-const CustomTextInput = ({ title, placeholder, value, onChangeText,bad }) => {
+const CustomTextInput = ({ title, placeholder, value, onChangeText,bad,keyboardType }) => {
   return (
     <View style={[styles.input,{borderColor:bad ? 'red' : '#9e9e9e'}]}>
       <Text style={[styles.title,{color: bad ? 'red' :'black'}]}>{title}</Text>
-      <TextInput value={value} onChangeText={txt => onChangeText(txt)} placeholder={placeholder} />
+      <TextInput value={value} onChangeText={txt => onChangeText(txt)} placeholder={placeholder} keyboardType={keyboardType?keyboardType:'default'}/>
     </View>
   )
 }

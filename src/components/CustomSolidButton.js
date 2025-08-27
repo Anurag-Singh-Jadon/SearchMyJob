@@ -3,9 +3,11 @@ import React from 'react'
 import { moderateScale, moderateVerticalScale, verticalScale } from 'react-native-size-matters'
 import { BG_COLOR, TEXT_COLOR } from '../utils/Colors'
 
-const CustomSolidButton = ({title,onClick2}) => {
+const CustomSolidButton = ({title,onClick}) => {
     return (
-        <TouchableOpacity style={styles.btn} onPress={onClick2}>
+        <TouchableOpacity style={styles.btn} onPress={()=>{
+            onClick();
+            }}>
         <Text style={styles.title}>{title}</Text>
         </TouchableOpacity> 
   )

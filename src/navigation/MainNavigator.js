@@ -7,6 +7,7 @@ import SelectUser from '../screens/onboarding/SelectUser'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import splash from '../screens/onboarding/Splash'
 import DashboardForCompany from '../screens/jobposting/DashboardForCompany'
+import AddJob from '../screens/jobposting/tabs/AddJob'
 const STACK = createNativeStackNavigator()
 const MainNavigator = () => {
   return (
@@ -16,11 +17,11 @@ const MainNavigator = () => {
          <STACK.Screen name='SelectUser' component={SelectUser} options={{ headerShown: false }} />
         <STACK.Screen name='JobPostingNavigator' component={JobPostingNavigator} options={{ headerShown: false }} />
         <STACK.Screen name='JobSearchingNavigator' component={JobSearchingNavigator} options={{ headerShown: false }} />
-        <STACK.Screen name='DashboardForCompany' component={DashboardForCompany} options={{ headerShown: false }} />
+        <STACK.Screen name='DashboardForCompany' component={DashboardForCompany} options={{ headerShown: false }} />  
+        <STACK.Screen name='AddJob' component={AddJob} options={{ headerShown: true }} />
       </STACK.Navigator>
     </NavigationContainer>
   )
 }
-
 export default MainNavigator
 
