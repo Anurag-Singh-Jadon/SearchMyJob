@@ -8,6 +8,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import splash from '../screens/onboarding/Splash'
 import DashboardForCompany from '../screens/jobposting/DashboardForCompany'
 import AddJob from '../screens/jobposting/tabs/AddJob'
+import EditJob from '../screens/jobposting/tabs/EditJob'
 const STACK = createNativeStackNavigator()
 const MainNavigator = () => {
   return (
@@ -19,6 +20,7 @@ const MainNavigator = () => {
         <STACK.Screen name='JobSearchingNavigator' component={JobSearchingNavigator} options={{ headerShown: false }} />
         <STACK.Screen name='DashboardForCompany' component={DashboardForCompany} options={{ headerShown: false }} />  
         <STACK.Screen name='AddJob' component={AddJob} options={{ headerShown: true }} />
+        <STACK.Screen name='EditJob' component={EditJob} options={{ headerShown: true }} />
       </STACK.Navigator>
     </NavigationContainer>
   )

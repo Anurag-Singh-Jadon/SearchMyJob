@@ -1,33 +1,49 @@
 import { StyleSheet, Text, View, TouchableOpacity, Image, Modal, FlatList } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { BG_COLOR } from '../../../utils/Colors'
 import { moderateScale, scale, verticalScale } from 'react-native-size-matters'
 import CustomTextInput from '../../../components/CustomTextInput'
 import CustomDropdown from '../../../components/CustomDropDown'
 import CustomSolidButton from '../../../components/CustomSolidButton'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 import { profiles } from '../../../utils/Profiles'
 import firestore from '@react-native-firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import Loader from '../../../components/Loader'
-const AddJob = () => {
+const EditJob = () => {
+  const route = useRoute()
+  console.log('Route',route)
   const navigation = useNavigation()
-  const [jobTitle, setJobTitle] = useState('')
-  const [jobDesc, setJobDesc] = useState('')
-  const [experience, setExperience] = useState('')
-  const [packagee, setPackagee] = useState('')
-  const [company, setCompany] = useState('')
+  const [jobTitle, setJobTitle] = useState(route.params.data.jobTitle)
+  const [jobDesc, setJobDesc] = useState(route.params.data.jobDesc)
+  const [experience, setExperience] = useState(route.params.data.experience)
+  const [packagee, setPackagee] = useState(route.params.data.packagee)
+  const [company, setCompany] = useState(route.params.data.company)
   const [openCategoryModal, setCategoryModal] = useState(false)
   const [openSkillsModal, setSkillModal] = useState(false)
   const [selectedCategory, setSelectedCategory] = useState('Select Category')
   const [selectedSkill, setSelectedSkill] = useState('Select Skill')
   const [loading, setLoading] = useState(false)
 
-  const postJob = async () => {
+  useEffect(()=>{
+   profiles.map((item,index)=>{
+    if(item.category ==route.params.data.category)
+        setSelectedCategory(index)
+        profiles[index].keywords.map((x,y)=>{
+           
+            if(x[0]==route.params.data.skill){
+                 console.log('x---',x)
+                setSelectedSkill(x[0])
+            }
+        })
+   })
+  },[])
+
+  const EditJob = async () => {
     let id = await AsyncStorage.getItem("USER_ID")
     let name = await AsyncStorage.getItem("NAME")
     setLoading(true);
-    firestore().collection("jobs").add({
+    firestore().collection("jobs").doc(route.params.data.id).update({
       postedBy: id,
       posterName: name,
       jobTitle: jobTitle,
@@ -49,7 +65,7 @@ const AddJob = () => {
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Image source={require('../../../assetsts/images/remove.png')} style={styles.back} />
         </TouchableOpacity>
-        <Text style={styles.title}>Post Job</Text>
+        <Text style={styles.title}>Edit Job</Text>
       </View>
       <CustomTextInput
         title={'Job title'}
@@ -120,8 +136,8 @@ const AddJob = () => {
 
       />
 
-      <CustomSolidButton title={'Post Job'} onClick={() => {
-        postJob()
+      <CustomSolidButton title={'Edit Job'} onClick={() => {
+        EditJob()
       }} />
       <Modal visible={openCategoryModal} transparent style={{ flex: 1 }}>
         <View style={styles.modalMainView}>
@@ -173,7 +189,7 @@ const AddJob = () => {
   )
 }
 
-export default AddJob
+export default EditJob
 
 const styles = StyleSheet.create({
   container: {
