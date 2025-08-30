@@ -1,4 +1,4 @@
-import { View, Image, StyleSheet, Text, TouchableOpacity } from 'react-native'
+import { View, Image, StyleSheet, Text, TouchableOpacity, Alert } from 'react-native'
 import React, { useState } from 'react'
 import { BG_COLOR } from '../../utils/Colors'
 import { scale, verticalScale } from 'react-native-size-matters'
@@ -12,7 +12,9 @@ const DashboardForCompany = () => {
   const navigation = useNavigation()
   return (
     <View style={styles.container}>
-      {selecteTab == 0 ? <MyJobs /> : selecteTab == 1 ? <SearchCandidates /> : selecteTab == 2 ? <Chats /> : <Profile1 />}
+      {selecteTab == 0 ? <MyJobs /> : selecteTab == 1 ? <SearchCandidates /> : selecteTab == 2 ? <Chats /> : <Profile1 onJobsClick={()=>{
+        setSelectedTab(0)
+      }}/>}
       <View style={styles.bottomView}>
         <TouchableOpacity style={[styles.bottomTab, { borderTopWidth: selecteTab == 0 ? 3 : 0, borderTopColor: 'red' }]} onPress={() => { setSelectedTab(0) }}>
           <Image source={require('../../assetsts/images/products.png')} style={[styles.tabIcon, { tintColor: selecteTab === 0 ? 'red' : '#9e9e9e' }]} />

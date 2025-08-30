@@ -9,6 +9,8 @@ import splash from '../screens/onboarding/Splash'
 import DashboardForCompany from '../screens/jobposting/DashboardForCompany'
 import AddJob from '../screens/jobposting/tabs/AddJob'
 import EditJob from '../screens/jobposting/tabs/EditJob'
+import UpdateProfileForCompany from '../screens/jobposting/UpdateProfileForCompany'
+import ChangeProfilepicForCompany from '../screens/jobposting/ChangeProfilepicForCompany'
 const STACK = createNativeStackNavigator()
 const MainNavigator = () => {
   return (
@@ -21,6 +23,8 @@ const MainNavigator = () => {
         <STACK.Screen name='DashboardForCompany' component={DashboardForCompany} options={{ headerShown: false }} />  
         <STACK.Screen name='AddJob' component={AddJob} options={{ headerShown: true }} />
         <STACK.Screen name='EditJob' component={EditJob} options={{ headerShown: true }} />
+        <STACK.Screen name='UpdateProfileForCompany' component={UpdateProfileForCompany} options={{ headerShown: false }} />
+        <STACK.Screen name='ChangeProfilepicForCompany' component={ChangeProfilepicForCompany} options={{ headerShown: false }} />
       </STACK.Navigator>
     </NavigationContainer>
   )

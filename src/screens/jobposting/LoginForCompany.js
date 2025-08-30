@@ -97,10 +97,7 @@ const LoginForCompany = () => {
     await AsyncStorage.setItem("EMAIL", email)
     await AsyncStorage.setItem("USER_ID", id)
     await AsyncStorage.setItem("USER_TYPE", "company")
-    setTimeout(() => {
       navigation.navigate('DashboardForCompany')
-    }, 2000)
-
   }
 
 

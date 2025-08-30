@@ -12,18 +12,24 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import Loader from '../../../components/Loader'
 const EditJob = () => {
   const route = useRoute()
-  console.log('Route',route)
-  const navigation = useNavigation()
-  const [jobTitle, setJobTitle] = useState(route.params.data.jobTitle)
-  const [jobDesc, setJobDesc] = useState(route.params.data.jobDesc)
-  const [experience, setExperience] = useState(route.params.data.experience)
-  const [packagee, setPackagee] = useState(route.params.data.packagee)
-  const [company, setCompany] = useState(route.params.data.company)
-  const [openCategoryModal, setCategoryModal] = useState(false)
-  const [openSkillsModal, setSkillModal] = useState(false)
-  const [selectedCategory, setSelectedCategory] = useState('Select Category')
-  const [selectedSkill, setSelectedSkill] = useState('Select Skill')
-  const [loading, setLoading] = useState(false)
+   const navigation = useNavigation()
+    const [jobTitle, setJobTitle] = useState(route.params.data.jobTitle)
+    const [badJobTitle, setBadJobTitle] = useState('')
+    const [jobDesc, setJobDesc] = useState(route.params.data.jobDesc)
+    const [badJobDesc, setBadJobDesc] = useState('')
+    const [experience, setExperience] = useState(route.params.data.experience)
+    const [badExp, setBadExp] = useState('')
+    const [packagee, setPackagee] = useState(route.params.data.packagee)
+    const [badpackage, setBadPackage] = useState('')
+    const [company, setCompany] = useState(route.params.data.company)
+    const [badCompany, setBadCompany] = useState('')
+    const [openCategoryModal, setCategoryModal] = useState(false)
+    const [openSkillsModal, setSkillModal] = useState(false)
+    const [selectedCategory, setSelectedCategory] = useState('Select Category')
+    const [badJobCategory, setBadJobCategory] = useState('')
+    const [selectedSkill, setSelectedSkill] = useState('Select Skill')
+    const [badJobSkill, setBadJobSkill] = useState('')
+    const [loading, setLoading] = useState(false)
 
   useEffect(()=>{
    profiles.map((item,index)=>{
@@ -59,6 +65,87 @@ const EditJob = () => {
         console.log(err)
       })
   };
+    const validate = () => {
+    let validJobTitle = true
+    let validJobDesc = true
+    let validCategory = true
+    let validSkill = true
+    let validExp = true
+    let validPackage = true
+    let validCompany = true
+    //JobTitle
+    if (jobTitle == '') {
+      validJobTitle = false
+      setBadJobTitle('Please Enter Job Title')
+    } else if (jobTitle != '') {
+      validJobTitle = true
+      setBadJobTitle('')
+    }
+    //Job description
+    if (jobDesc == '') {
+      validJobDesc = false
+      setBadJobDesc('Please Enter Job Description')
+    } else if (jobDesc != '' && jobDesc.length < 50) {
+      validJobDesc = false
+      setBadJobDesc('Please Enter Description minimum 50 character')
+    } else if (jobDesc != '' && jobDesc.length >= 50) {
+      validJobDesc = true
+      setBadJobDesc('')
+    }
+    //Category
+    if (selectedCategory == 'Select Category') {
+      validCategory = false
+      setBadJobCategory('Please Select Job Category')
+    } else if (selectedCategory != 'Select Category') {
+      validCategory = true
+      setBadJobCategory('')
+    }
+    //Skill
+
+    if (selectedSkill == 'Select Skill') {
+      validSkill = false
+      setBadJobSkill('Please Select Job Skill')
+    } else if (selectedSkill != 'Select Skill') {
+      validSkill = true
+      setBadJobSkill('')
+    }
+    let expRegex = /^\d+$/
+    //Experience
+    if (experience == '') {
+      validExp = false
+      setBadExp('Please Enter the Experience')
+    } else if (experience != '' && experience.length > 2) {
+      validExp = false
+      setBadExp('Please Enter valid Experience')
+    } else if (experience != '' && experience.length < 3 && !experience.match(expRegex)) {
+      validExp = false
+      setBadExp('Please Enter valid Experience')
+    } else if (experience != '' && experience.length < 3 && experience.match(expRegex)) {
+      validExp = true
+      setBadExp('')
+    }
+    //Package
+
+    if (packagee == '') {
+      validPackage = false
+      setBadPackage('Please Enter the Package')
+    } else if (packagee != '' && !packagee.match(expRegex)) {
+      validPackage = false
+      setBadPackage('Please Enter valid Salary')
+    } else if (packagee != '' && packagee.match(expRegex)) {
+      validPackage = true
+      setBadPackage('')
+    }
+    //Company
+    if (company == '') {
+      validCompany = false
+      setBadCompany('Please Enter the company')
+    } else if (company != '') {
+      validCompany = true
+      setBadCompany('')
+    }
+    return validJobTitle && validJobDesc && validCategory && validCompany && validSkill && validExp && validPackage
+  }
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -67,25 +154,27 @@ const EditJob = () => {
         </TouchableOpacity>
         <Text style={styles.title}>Edit Job</Text>
       </View>
-      <CustomTextInput
+     <CustomTextInput
         title={'Job title'}
         value={jobTitle}
         onChangeText={txt => {
           setJobTitle(txt)
         }}
         placeholder={'ex: software developer'}
-
+        bad={badJobTitle != '' ? true : false}
       />
-      <CustomTextInput
+      {badJobTitle != '' && <Text style={styles.errorMsg}>{badJobTitle}</Text>}
+     <CustomTextInput
         title={'Job Description'}
         value={jobDesc}
         onChangeText={txt => {
           setJobDesc(txt)
         }}
         placeholder={'ex: this is software developer job'}
-
+         bad={badJobDesc != '' ? true : false}
       />
-      <CustomDropdown
+      {badJobDesc != '' && <Text style={styles.errorMsg}>{badJobDesc}</Text>}
+    <CustomDropdown
         title={'Category'}
         value={jobDesc}
         onChangeText={txt => {
@@ -95,7 +184,9 @@ const EditJob = () => {
         onClick1={() => {
           setCategoryModal(true)
         }}
+         bad={badJobCategory != '' ? true : false}
       />
+      {badJobCategory != '' && <Text style={styles.errorMsg}>{badJobCategory}</Text>}
       <CustomDropdown
         title={'Skills'}
         value={jobDesc}
@@ -106,8 +197,10 @@ const EditJob = () => {
         onClick1={() => {
           setSkillModal(true)
         }}
+         bad={badJobSkill != '' ? true : false}
       />
-      <CustomTextInput
+      {badJobSkill != '' && <Text style={styles.errorMsg}>{badJobSkill}</Text>}
+     <CustomTextInput
         title={'Experience'}
         value={experience}
         onChangeText={txt => {
@@ -115,7 +208,9 @@ const EditJob = () => {
         }}
         keyboardType={'number-pad'}
         placeholder={'ex: required experience is 5 years'}
+         bad={badExp != '' ? true : false}
       />
+      {badExp != '' && <Text style={styles.errorMsg}>{badExp}</Text>}
       <CustomTextInput
         title={'Package'}
         value={packagee}
@@ -124,8 +219,9 @@ const EditJob = () => {
         }}
         keyboardType={'number-pad'}
         placeholder={'ex: 10LPA'}
-
+         bad={badpackage != '' ? true : false}
       />
+      {badpackage != '' && <Text style={styles.errorMsg}>{badpackage}</Text>}
       <CustomTextInput
         title={'Company'}
         value={company}
@@ -133,11 +229,15 @@ const EditJob = () => {
           setCompany(txt)
         }}
         placeholder={'ex: Google'}
-
+         bad={badpackage != '' ? true : false}
       />
+     {badCompany != '' && <Text style={styles.errorMsg}>{badCompany}</Text>}
 
-      <CustomSolidButton title={'Edit Job'} onClick={() => {
-        EditJob()
+      <CustomSolidButton title={'Update Job'} onClick={() => {
+        if(validate()){
+         EditJob()
+        }
+        
       }} />
       <Modal visible={openCategoryModal} transparent style={{ flex: 1 }}>
         <View style={styles.modalMainView}>
@@ -232,5 +332,9 @@ const styles = StyleSheet.create({
     paddingLeft: moderateScale(20),
     borderBottomWidth: 0.4,
     alignSelf: 'center'
-  }
+  },
+    errorMsg: {
+    marginLeft: moderateScale(20),
+    color: 'red'
+  },
 })

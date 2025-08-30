@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity, Image, Modal, FlatList } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, Image, Modal, FlatList,ScrollView } from 'react-native'
 import React, { useState } from 'react'
 import { BG_COLOR } from '../../../utils/Colors'
 import { moderateScale, scale, verticalScale } from 'react-native-size-matters'
@@ -10,20 +10,29 @@ import { profiles } from '../../../utils/Profiles'
 import firestore from '@react-native-firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import Loader from '../../../components/Loader'
+
 const AddJob = () => {
   const navigation = useNavigation()
   const [jobTitle, setJobTitle] = useState('')
+  const [badJobTitle, setBadJobTitle] = useState('')
   const [jobDesc, setJobDesc] = useState('')
+  const [badJobDesc, setBadJobDesc] = useState('')
   const [experience, setExperience] = useState('')
+  const [badExp, setBadExp] = useState('')
   const [packagee, setPackagee] = useState('')
+  const [badpackage, setBadPackage] = useState('')
   const [company, setCompany] = useState('')
+  const [badCompany, setBadCompany] = useState('')
   const [openCategoryModal, setCategoryModal] = useState(false)
   const [openSkillsModal, setSkillModal] = useState(false)
   const [selectedCategory, setSelectedCategory] = useState('Select Category')
+  const [badJobCategory, setBadJobCategory] = useState('')
   const [selectedSkill, setSelectedSkill] = useState('Select Skill')
+  const [badJobSkill, setBadJobSkill] = useState('')
   const [loading, setLoading] = useState(false)
 
   const postJob = async () => {
+    // console.log('tst',profiles.category)
     let id = await AsyncStorage.getItem("USER_ID")
     let name = await AsyncStorage.getItem("NAME")
     setLoading(true);
@@ -43,8 +52,91 @@ const AddJob = () => {
         console.log(err)
       })
   };
+
+  const validate = () => {
+    let validJobTitle = true
+    let validJobDesc = true
+    let validCategory = true
+    let validSkill = true
+    let validExp = true
+    let validPackage = true
+    let validCompany = true
+    //JobTitle
+    if (jobTitle == '') {
+      validJobTitle = false
+      setBadJobTitle('Please Enter Job Title')
+    } else if (jobTitle != '') {
+      validJobTitle = true
+      setBadJobTitle('')
+    }
+    //Job description
+    if (jobDesc == '') {
+      validJobDesc = false
+      setBadJobDesc('Please Enter Job Description')
+    } else if (jobDesc != '' && jobDesc.length < 50) {
+      validJobDesc = false
+      setBadJobDesc('Please Enter Description minimum 50 character')
+    } else if (jobDesc != '' && jobDesc.length >= 50) {
+      validJobDesc = true
+      setBadJobDesc('')
+    }
+    //Category
+    if (selectedCategory == 'Select Category') {
+      validCategory = false
+      setBadJobCategory('Please Select Job Category')
+    } else if (selectedCategory != 'Select Category') {
+      validCategory = true
+      setBadJobCategory('')
+    }
+    //Skill
+
+    if (selectedSkill == 'Select Skill') {
+      validSkill = false
+      setBadJobSkill('Please Select Job Skill')
+    } else if (selectedSkill != 'Select Skill') {
+      validSkill = true
+      setBadJobSkill('')
+    }
+    let expRegex = /^\d+$/
+    //Experience
+    if (experience == '') {
+      validExp = false
+      setBadExp('Please Enter the Experience')
+    } else if (experience != '' && experience.length > 2) {
+      validExp = false
+      setBadExp('Please Enter valid Experience')
+    } else if (experience != '' && experience.length < 3 && !experience.match(expRegex)) {
+      validExp = false
+      setBadExp('Please Enter valid Experience')
+    } else if (experience != '' && experience.length < 3 && experience.match(expRegex)) {
+      validExp = true
+      setBadExp('')
+    }
+    //Package
+
+    if (packagee == '') {
+      validPackage = false
+      setBadPackage('Please Enter the Package')
+    } else if (packagee != '' && !packagee.match(expRegex)) {
+      validPackage = false
+      setBadPackage('Please Enter valid Salary')
+    } else if (packagee != '' && packagee.match(expRegex)) {
+      validPackage = true
+      setBadPackage('')
+    }
+    //Company
+    if (company == '') {
+      validCompany = false
+      setBadCompany('Please Enter the company')
+    } else if (company != '') {
+      validCompany = true
+      setBadCompany('')
+    }
+    return validJobTitle && validJobDesc && validCategory && validCompany && validSkill && validExp && validPackage
+  }
   return (
     <View style={styles.container}>
+      <ScrollView height={'50%'}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Image source={require('../../../assetsts/images/remove.png')} style={styles.back} />
@@ -58,8 +150,9 @@ const AddJob = () => {
           setJobTitle(txt)
         }}
         placeholder={'ex: software developer'}
-
+        bad={badJobTitle != '' ? true : false}
       />
+      {badJobTitle != '' && <Text style={styles.errorMsg}>{badJobTitle}</Text>}
       <CustomTextInput
         title={'Job Description'}
         value={jobDesc}
@@ -67,8 +160,9 @@ const AddJob = () => {
           setJobDesc(txt)
         }}
         placeholder={'ex: this is software developer job'}
-
+         bad={badJobDesc != '' ? true : false}
       />
+      {badJobDesc != '' && <Text style={styles.errorMsg}>{badJobDesc}</Text>}
       <CustomDropdown
         title={'Category'}
         value={jobDesc}
@@ -79,7 +173,9 @@ const AddJob = () => {
         onClick1={() => {
           setCategoryModal(true)
         }}
+         bad={badJobCategory != '' ? true : false}
       />
+      {badJobCategory != '' && <Text style={styles.errorMsg}>{badJobCategory}</Text>}
       <CustomDropdown
         title={'Skills'}
         value={jobDesc}
@@ -90,7 +186,9 @@ const AddJob = () => {
         onClick1={() => {
           setSkillModal(true)
         }}
+         bad={badJobSkill != '' ? true : false}
       />
+      {badJobSkill != '' && <Text style={styles.errorMsg}>{badJobSkill}</Text>}
       <CustomTextInput
         title={'Experience'}
         value={experience}
@@ -99,7 +197,9 @@ const AddJob = () => {
         }}
         keyboardType={'number-pad'}
         placeholder={'ex: required experience is 5 years'}
+         bad={badExp != '' ? true : false}
       />
+      {badExp != '' && <Text style={styles.errorMsg}>{badExp}</Text>}
       <CustomTextInput
         title={'Package'}
         value={packagee}
@@ -108,8 +208,9 @@ const AddJob = () => {
         }}
         keyboardType={'number-pad'}
         placeholder={'ex: 10LPA'}
-
+         bad={badpackage != '' ? true : false}
       />
+      {badpackage != '' && <Text style={styles.errorMsg}>{badpackage}</Text>}
       <CustomTextInput
         title={'Company'}
         value={company}
@@ -117,12 +218,15 @@ const AddJob = () => {
           setCompany(txt)
         }}
         placeholder={'ex: Google'}
-
+         bad={badpackage != '' ? true : false}
       />
-
+     {badCompany != '' && <Text style={styles.errorMsg}>{badCompany}</Text>}
       <CustomSolidButton title={'Post Job'} onClick={() => {
-        postJob()
+        if (validate()) {
+          postJob()
+        }
       }} />
+      </ScrollView>
       <Modal visible={openCategoryModal} transparent style={{ flex: 1 }}>
         <View style={styles.modalMainView}>
           <View style={styles.listingView}>
@@ -168,7 +272,7 @@ const AddJob = () => {
           </View>
         </View>
       </Modal>
-      <Loader visible={loading}/>
+      <Loader visible={loading} />
     </View>
   )
 }
@@ -216,5 +320,9 @@ const styles = StyleSheet.create({
     paddingLeft: moderateScale(20),
     borderBottomWidth: 0.4,
     alignSelf: 'center'
-  }
+  },
+   errorMsg: {
+    marginLeft: moderateScale(20),
+    color: 'red'
+  },
 })
