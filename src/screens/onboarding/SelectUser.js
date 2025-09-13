@@ -9,7 +9,7 @@ const SelectUser = () => {
     const navigation = useNavigation()
     return (
         <View style={styles.container}>
-            <Image source={require('../../assetsts/images/products.png')} style={styles.logo}/>
+            <Image source={require('../../assetsts/images/job-seeker.png')} style={styles.logo}/>
             <Text style={styles.title}>What are you looking for?</Text>
             <TouchableOpacity style={styles.wantToHire} onPress={() =>{
                 navigation.navigate("JobPostingNavigator")

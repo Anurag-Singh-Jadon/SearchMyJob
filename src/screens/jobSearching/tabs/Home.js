@@ -1,34 +1,54 @@
 import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import React from 'react'
+import React,{useEffect,useState} from 'react'
 import { BG_COLOR, TEXT_COLOR } from '../../../utils/Colors'
 import { moderateScale, moderateVerticalScale, scale, verticalScale } from 'react-native-size-matters'
 import CustomSolidButton from '../../../components/CustomSolidButton'
+import { useIsFocused, useNavigation } from '@react-navigation/native'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 
 const Home = () => {
+  const navigation = useNavigation()
+  const isFocused = useIsFocused();
+  const [isLogin, setIsLogin] = useState(false)
+  useEffect(()=>{
+    getData()
+  },[isFocused])
+  const getData = async() =>{
+   const id = await AsyncStorage.getItem("USER_ID")
+   const type = await AsyncStorage.getItem("USER_TYPE")
+   if(id != null && type != null){
+     if(type == 'user'){
+       setIsLogin(true)
+     }
+   }
+  }
   return (
     <View style={styles.container}>
-      <TouchableOpacity activeOpacity={1} style={styles.searchBox}>
-        <Image source={require('../../../assetsts/images/products.png')} style={styles.icon} />
+      <TouchableOpacity activeOpacity={1} style={styles.searchBox} onPress={()=>navigation.navigate('SearchJob')}>
+        <Image source={require('../../../assetsts/images/search1.png')} style={styles.icon} />
         <Text style={styles.placeHolder}>Search Job here...</Text>
       </TouchableOpacity>
+      {!isLogin && (<View>
       <Text style={styles.heading}>{"You are one step away from getting a good job"}</Text>
       <View style={styles.notes}>
         <Image source={require('../../../assetsts/images/products.png')} style={styles.icon} />
         <Text style={styles.note}>{"Get Jobs after creating account"}</Text>
-      </View>
+      </View> 
       <View style={styles.notes}>
         <Image source={require('../../../assetsts/images/products.png')} style={styles.icon} />
         <Text style={styles.note}>{"Chat with recruiter directly"}</Text>
       </View>
       <View style={styles.btnsView}>
-        <TouchableOpacity style={styles.loginBtn}>
+        <TouchableOpacity style={styles.loginBtn} onPress={()=> navigation.navigate('LoginForUser')}>
           <Text style={[styles.btnText, { color: BG_COLOR }]}>Login</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.signUpBtn}>
+        <TouchableOpacity style={styles.signUpBtn} onPress={()=> navigation.navigate('SignupForUser')}>
           <Text style={styles.btnText}>Register</Text>
         </TouchableOpacity>
       </View>
+      </View>)}
+      
       <View style={styles.jobSearchCard}>
         <Image source={require('../../../assetsts/images/search.gif')} style={styles.gif} />
         <TextInput style={styles.input} placeholder='Enter Job Title'/>

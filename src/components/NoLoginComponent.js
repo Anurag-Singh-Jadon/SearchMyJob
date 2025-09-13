@@ -1,17 +1,33 @@
 import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { BG_COLOR } from '../utils/Colors'
 import { moderateScale } from 'react-native-size-matters'
 import CustomSolidButton from './CustomSolidButton'
+import { useIsFocused } from '@react-navigation/native'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const NoLoginComponent = ({heading,desc}) => {
+      const isFocused = useIsFocused();
+      const [isLogin, setIsLogin] = useState(false)
+        useEffect(() => {
+            getData()
+        }, [isFocused])
+        const getData = async () => {
+            const id = await AsyncStorage.getItem("USER_ID")
+            const type = await AsyncStorage.getItem("USER_TYPE")
+            if (id != null && type != null) {
+                if (type == 'user') {
+                    setIsLogin(true)
+                }
+            }
+        }
   return (
     <View style={styles.container}>
       <Text style={styles.heading}>{heading?heading : ""}</Text>
       <Text style={styles.desc}>{desc?desc : ""}</Text>
-      <CustomSolidButton title={'Login'} onClick={()=>{
+      {!isLogin && (<CustomSolidButton title={'Login'} onClick={()=>{
 
-      }}/>
+      }}/>)}
       <View style={styles.signUpView}>
       <Text style={styles.text1}>{"Don't have an account?"}</Text>
       <Text style={styles.text2}>{"Create Account"}</Text>

@@ -1,9 +1,11 @@
 import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React,{useEffect,useState} from 'react'
 import NoLoginComponent from '../../../components/NoLoginComponent'
 import { BG_COLOR } from '../../../utils/Colors'
 
+
 const Inbox = () => {
+ 
   return (
      <View style={styles.container}>
     <NoLoginComponent desc={'Talk to any recruiter for getting a job recommendations from MNCs'}

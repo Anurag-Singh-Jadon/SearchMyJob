@@ -54,7 +54,7 @@ const ChangeProfilepicForCompany = () => {
             <TouchableOpacity style={styles.backBtn}>
                 <Image source={require('../../assetsts/images/remove.png')} style={styles.back} />
             </TouchableOpacity>
-            {imageData == null ? (<Image source={require('../../assetsts/images/banner.jpg')} style={styles.profile} />)
+            {imageData == null ? (<Image source={require('../../assetsts/images/user-round.png')} style={styles.profile} />)
                 : (<Image source={{ uri: imageData.assets[0].uri }} style={styles.profile} />)}
 
             <CustomBorderButton title={'Pick Image from Galary'} onClick1={() => {

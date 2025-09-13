@@ -1,13 +1,13 @@
 import { Text, View, StyleSheet, Image, TouchableOpacity, Alert } from 'react-native'
-import React, { useState } from 'react'
-import { BG_COLOR, TEXT_COLOR } from '../../utils/Colors'
-import { moderateScale, moderateVerticalScale, scale, verticalScale } from 'react-native-size-matters'
+import React , { useState } from 'react'
+import {BG_COLOR,TEXT_COLOR} from '../../utils/Colors'
+import { moderateScale, moderateVerticalScale, verticalScale,scale} from 'react-native-size-matters'
 import CustomTextInput from '../../components/CustomTextInput'
 import { useNavigation } from '@react-navigation/native'
 import firestore from '@react-native-firebase/firestore';
 import Loader from '../../components/Loader'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-const LoginForCompany = () => {
+const LoginForUser = () => {
   const navigation = useNavigation()
   const [email, setEmail] = useState('')
   const [badEmail, setBadEmail] = useState('')
@@ -44,32 +44,10 @@ const LoginForCompany = () => {
     }
     return validEmail && validPass
   }
-  // const loginUser = async () => {
-  //   console.log('Checking');
-  //   setLoading(true);
-
-  //   try {
-  //     // Await the result of the Firestore query.
-  //     // The code will pause here until the data is fetched or an error occurs.
-  //     const querySnapshot = await firestore().collection("job_posters").where("email", "==", email).get();
-  // //     const q = query(collection(db,'job_posters'),where("email", "==", email));
-  // //     const querySnapshot = await getDocs(q);
-  // //     querySnapshot.forEach(doc => {
-  // //   console.log('Data mil raha hai',doc);
-  // // });
-  //     console.log('Data has arrived:', querySnapshot);
-  //     setLoading(false);
-  //     console.log(querySnapshot.docs);
-  //   } catch (error) {
-  //     // If any error occurs in the `try` block, it will be caught here.
-  //     console.log('An error occurred');
-  //     setLoading(false);
-  //     console.log(error);
-  //   }
-  // };
+ 
   const loginUser = () => {
     setLoading(true);
-    firestore().collection('job_posters').where('email', '==', email).get().then(data => {
+    firestore().collection('users').where('email', '==', email).get().then(data => {
       setLoading(false)
       console.log(data.docs)
       if (data.docs.length > 0) {
@@ -96,13 +74,13 @@ const LoginForCompany = () => {
     await AsyncStorage.setItem("NAME", name)
     await AsyncStorage.setItem("EMAIL", email)
     await AsyncStorage.setItem("USER_ID", id)
-    await AsyncStorage.setItem("USER_TYPE", "company")
-      navigation.navigate('DashboardForCompany')
+    await AsyncStorage.setItem("USER_TYPE", "user")
+      navigation.navigate('Main')
   }
 
 
   return (
-    <View style={styles.container}>
+   <View style={styles.container}>
       <Image source={require('../../assetsts/images/job-seeker.png')} style={styles.logo} />
       <Text style={styles.title}>Login</Text>
       <CustomTextInput
@@ -133,7 +111,7 @@ const LoginForCompany = () => {
       }}>
         <Text style={styles.title2}>Login</Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate('SignUpForCompany')} style={styles.btn1}>
+      <TouchableOpacity onPress={() => navigation.navigate('SignupForUser')} style={styles.btn1}>
         <Text style={styles.title1}>Create Account</Text>
       </TouchableOpacity>
       <Loader visible={loading} />
@@ -141,7 +119,7 @@ const LoginForCompany = () => {
   )
 }
 
-export default LoginForCompany
+export default LoginForUser
 
 const styles = StyleSheet.create({
   container: {
@@ -204,4 +182,3 @@ const styles = StyleSheet.create({
   },
 
 })
-

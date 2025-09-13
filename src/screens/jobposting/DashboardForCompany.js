@@ -12,12 +12,12 @@ const DashboardForCompany = () => {
   const navigation = useNavigation()
   return (
     <View style={styles.container}>
-      {selecteTab == 0 ? <MyJobs /> : selecteTab == 1 ? <SearchCandidates /> : selecteTab == 2 ? <Chats /> : <Profile1 onJobsClick={()=>{
+      {selecteTab == 0 ? <MyJobs /> : selecteTab == 1 ? <SearchCandidates /> : selecteTab == 2 ? <Chats /> : <Profile1 onJobsClick={() => {
         setSelectedTab(0)
-      }}/>}
+      }} />}
       <View style={styles.bottomView}>
         <TouchableOpacity style={[styles.bottomTab, { borderTopWidth: selecteTab == 0 ? 3 : 0, borderTopColor: 'red' }]} onPress={() => { setSelectedTab(0) }}>
-          <Image source={require('../../assetsts/images/products.png')} style={[styles.tabIcon, { tintColor: selecteTab === 0 ? 'red' : '#9e9e9e' }]} />
+          <Image source={selecteTab == 0 ? require('../../assetsts/images/home-solid.png') : require('../../assetsts/images/home.png')} style={[styles.tabIcon, { tintColor: selecteTab === 0 ? 'red' : '#9e9e9e' }]} />
         </TouchableOpacity>
         <TouchableOpacity style={[styles.bottomTab, { borderTopWidth: selecteTab == 1 ? 3 : 0, borderTopColor: 'red' }]} onPress={() => { setSelectedTab(1) }}>
           <Image source={require('../../assetsts/images/camera.png')} style={[styles.tabIcon, { tintColor: selecteTab === 1 ? 'red' : '#9e9e9e' }]} />
@@ -25,13 +25,13 @@ const DashboardForCompany = () => {
         <TouchableOpacity style={styles.bottomTab} onPress={() => {
           navigation.navigate('AddJob')
         }}>
-          <Image source={require('../../assetsts/images/products.png')} style={styles.tabIcon} />
+          <Image source={selecteTab == 2 ? require('../../assetsts/images/add.png') : require('../../assetsts/images/add.png')} style={styles.tabIcon} />
         </TouchableOpacity>
         <TouchableOpacity style={[styles.bottomTab, { borderTopWidth: selecteTab == 2 ? 3 : 0, borderTopColor: 'red' }]} onPress={() => { setSelectedTab(2) }}>
           <Image source={require('../../assetsts/images/camera.png')} style={[styles.tabIcon, { tintColor: selecteTab === 2 ? 'red' : '#9e9e9e' }]} />
         </TouchableOpacity>
         <TouchableOpacity style={[styles.bottomTab, { borderTopWidth: selecteTab == 3 ? 3 : 0, borderTopColor: 'red' }]} onPress={() => { setSelectedTab(3) }}>
-          <Image source={require('../../assetsts/images/products.png')} style={[styles.tabIcon, { tintColor: selecteTab === 3 ? 'red' : '#9e9e9e' }]} />
+          <Image source={selecteTab == 4 ? require('../../assetsts/images/user.png') :require('../../assetsts/images/user-solid.png')} style={[styles.tabIcon, { tintColor: selecteTab === 3 ? 'red' : '#9e9e9e' }]} />
         </TouchableOpacity>
       </View>
     </View>

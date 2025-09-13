@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet, Image, TouchableOpacity, ScrollView, SafeAreaViewBase, Alert } from 'react-native'
+import { Text, View, StyleSheet, Image, TouchableOpacity, ScrollView, Alert } from 'react-native'
 import React, { useState } from 'react'
 import { BG_COLOR, RED_COLOR, TEXT_COLOR } from '../../utils/Colors'
 import { moderateScale, moderateVerticalScale, scale, verticalScale } from 'react-native-size-matters'
@@ -7,7 +7,7 @@ import { useNavigation } from '@react-navigation/native'
 import Loader from '../../components/Loader'
 import auth from '@react-native-firebase/auth'; // Import the Auth module
 import firestore from '@react-native-firebase/firestore';
-const SignUpForCompany = () => {
+const SignupForUser = () => {
   const navigation = useNavigation()
   const [name, setName] = useState('')
   const [badName, setBadName] = useState('')
@@ -104,25 +104,21 @@ const SignUpForCompany = () => {
 
   const registerUser = () => {
     setLoading(true);
-    firestore().collection("job_posters").add({
+    firestore().collection("users").add({
       name,
       email,
       contact,
-      address,
-      companyName,
       password,
     })
       .then(() => {
         setName('')
         setEmail('')
         setPassword('')
-        setAddress('')
-        setCompanyName('')
         setContact('')
         setAccountCreated(true)
         setLoading(false);
         setTimeout(() => {
-          navigation.goBack()
+          navigation.navigate('LoginForUser')
         }, 3000)
         // console.log('User registered successfully!');
       })
@@ -132,7 +128,7 @@ const SignUpForCompany = () => {
       });
   };
 
-
+ 
 
   return (
     <View style={styles.container}>
@@ -212,7 +208,7 @@ const SignUpForCompany = () => {
             }} >
               <Text style={styles.title2}>Sign up</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigation.goBack()} style={styles.btn1}>
+            <TouchableOpacity onPress={() => navigation.navigate('LoginForUser')} style={styles.btn1}>
               <Text style={styles.title1}>Login</Text>
             </TouchableOpacity>
           </ScrollView>
@@ -231,7 +227,7 @@ const SignUpForCompany = () => {
   )
 }
 
-export default SignUpForCompany
+export default SignupForUser
 
 const styles = StyleSheet.create({
   container: {

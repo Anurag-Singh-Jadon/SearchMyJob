@@ -28,7 +28,7 @@ const Profile1 = ({ onJobsClick }) => {
       <Text style={styles.heading}>SearchMyJob</Text>
       <TouchableOpacity>
         {profileImg != '' ? (<Image source={{ uri: profileImg }} style={styles.profileImg} />
-        ): (<Image source={require('../../../assetsts/images/products.png')} style={styles.profileImg} />)}
+        ): (<Image source={require('../../../assetsts/images/user-round.png')} style={styles.profileImg} />)}
       </TouchableOpacity>
       <Text style={styles.name}>{name}</Text>
       <Text style={styles.changeProfilePic} onPress={() => navigation.navigate('UpdateProfileForCompany')}>Update Profile </Text>
@@ -36,16 +36,16 @@ const Profile1 = ({ onJobsClick }) => {
         navigation.navigate('ChangeProfilepicForCompany')
       }}>Change Profile Picture</Text>
       <View style={styles.optionArea}>
-        <ProfileOptionItem icon={require('../../../assetsts/images/products.png')} title={`My Jobs (${jobs})`} onClick={() => {
+        <ProfileOptionItem icon={require('../../../assetsts/images/job-seeker.png')} title={`My Jobs (${jobs})`} onClick={() => {
           onJobsClick()
         }} />
-        <ProfileOptionItem icon={require('../../../assetsts/images/products.png')} title={'Contact Us'} onClick={() => {
+        <ProfileOptionItem icon={require('../../../assetsts/images/contact-mail.png')} title={'Contact Us'} onClick={() => {
           onJobsClick()
         }} />
-        <ProfileOptionItem icon={require('../../../assetsts/images/products.png')} title={'App Theme'} onClick={() => {
+        <ProfileOptionItem icon={require('../../../assetsts/images/themes.png')} title={'App Theme'} onClick={() => {
           onJobsClick()
         }} />
-        <ProfileOptionItem icon={require('../../../assetsts/images/products.png')} title={'Logout'} onClick={() => {
+        <ProfileOptionItem icon={require('../../../assetsts/images/turn-off.png')} title={'Logout'} onClick={() => {
           onJobsClick()
         }} />
       </View>

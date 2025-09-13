@@ -17,6 +17,8 @@ const splash = () => {
    if(type != null){
     if(type == 'company'){
     navigation.navigate('DashboardForCompany')
+    }else{
+      navigation.navigate('JobSearchingNavigator')
     }
    }else{
     navigation.navigate('SelectUser')
@@ -24,7 +26,7 @@ const splash = () => {
   }
   return (
     <View style={styles.container}>
-      <Image source={require('../../assetsts/images/products.png')} style={styles.logo} />
+      <Image source={require('../../assetsts/images/job-seeker.png')} style={styles.logo} />
       <Text style={styles.name}>Search My Job</Text>
       <Text style={styles.slogan}>Post & Find Jobs in One Tap</Text>
     </View>
@@ -41,7 +43,8 @@ const styles = {
   },
   logo: {
     width: scale(100),
-    height: verticalScale(100)
+    height: verticalScale(100),
+    resizeMode: 'contain'
   },
   name: {
     fontSize: scale(20),

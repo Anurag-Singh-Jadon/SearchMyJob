@@ -24,19 +24,19 @@ const Drawer = () => {
             }
             <View style={styles.bottomNavView}>
                 <TouchableOpacity style={styles.tab} onPress={() => setCurrentTab(0)}>
-                    <Image source={require('../../assetsts/images/products.png')} style={styles.tabIcon} />
+                    <Image source={currentTab == 0 ? require('../../assetsts/images/home-solid.png') :require('../../assetsts/images/home.png')} style={styles.tabIcon} />
                     <Text>Home</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.tab} onPress={() => setCurrentTab(1)}>
-                    <Image source={require('../../assetsts/images/products.png')} style={styles.tabIcon} />
+                    <Image source={currentTab == 1 ? require('../../assetsts/images/message.png') :require('../../assetsts/images/send.png')} style={styles.tabIcon} />
                     <Text>Applies</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.tab} onPress={() => setCurrentTab(2)}>
-                    <Image source={require('../../assetsts/images/products.png')} style={styles.tabIcon} />
+                    <Image source={currentTab == 2 ? require('../../assetsts/images/chat.png') :require('../../assetsts/images/messenger.png')} style={styles.tabIcon} />
                     <Text>Chat</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.tab} onPress={() => setCurrentTab(3)}>
-                    <Image source={require('../../assetsts/images/products.png')} style={styles.tabIcon} />
+                    <Image source={currentTab == 2 ? require('../../assetsts/images/user.png') :require('../../assetsts/images/user-solid.png')} style={styles.tabIcon} />
                     <Text>Profile</Text>
                 </TouchableOpacity>
 

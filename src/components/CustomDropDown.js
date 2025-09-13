@@ -10,7 +10,7 @@ const CustomDropDown = ({ title, placeholder, bad,onClick1}) => {
         }} >
             <Text style={[styles.title, { color: bad ? 'red' : 'black' }]}>{title}</Text>
             <Text style={{ color:placeholder.includes('Select') ?'#9e9e9e' :'#000000'}}>{placeholder}</Text>
-            <Image source={require('../assetsts/images/edit.png')} style={styles.icon} />
+            <Image source={require('../assetsts/images/down-arrow.png')} style={styles.icon} />
         </TouchableOpacity>
     )
 }

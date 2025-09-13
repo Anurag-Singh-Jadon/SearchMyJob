@@ -1,47 +1,72 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity,FlatList} from 'react-native'
-import React from 'react'
+import { StyleSheet, Text, View, Image, TouchableOpacity, FlatList } from 'react-native'
+import React, { useState, useEffect } from 'react'
 import { moderateScale, moderateVerticalScale, scale, verticalScale } from 'react-native-size-matters'
 import { BG_COLOR, TEXT_COLOR } from '../../utils/Colors'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { useIsFocused } from '@react-navigation/native'
 
 const CustomDrawer = () => {
+    const isFocused = useIsFocused();
+    const [isLogin, setIsLogin] = useState(false)
+    const [name, setName] = useState('')
+    const [email, setEmail] = useState('')
+    useEffect(() => {
+        getData()
+    }, [isFocused])
+    const getData = async () => {
+        const id = await AsyncStorage.getItem("USER_ID")
+        const type = await AsyncStorage.getItem("USER_TYPE")
+        const nName = await AsyncStorage.getItem("NAME")
+        const mEmail = await AsyncStorage.getItem("EMAIL")
+        if (id != null && type != null) {
+            if (type == 'user') {
+                setIsLogin(true)
+                setEmail(mEmail)
+                setName(nName)
+            }
+        }
+    }
     const data1 = [
-     {title:"Rate us",icon:require('../../assetsts/images/products.png')},
-     {title:"Theme",icon:require('../../assetsts/images/products.png')}
+        { title: "Rate us", icon: require('../../assetsts/images/contact-mail.png') },
+        { title: "Theme", icon: require('../../assetsts/images/star.png') }
     ]
     return (
         <View style={styles.container}>
             <View style={styles.topView}>
-                <Image source={require('../../assetsts/images/products.png')} style={styles.profile} />
+                <Image source={require('../../assetsts/images/user-round.png')} style={styles.profile} />
                 <View>
-                    <Text style={styles.heading}>Build Your Profile</Text>
-                    <Text style={styles.subHeading}>Job Opportunity waiting for you at SearchMyJob</Text>
+                    <Text style={styles.heading}>{isLogin ? name : 'Build Your Profile'}</Text>
+                    <Text style={[styles.subHeading, { width: isLogin ? '100%' : '60%' }]}>{isLogin ? email : 'Job Opportunity waiting for you at SearchMyJob'}</Text>
                 </View>
             </View>
-            <View style={styles.btnsView}>
-                <TouchableOpacity style={styles.loginBtn}>
-                    <Text style={[styles.btnText,{color:BG_COLOR}]}>Login</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.signUpBtn}>
-                    <Text style={styles.btnText}>Register</Text>
-                </TouchableOpacity>
-            </View>
+            {!isLogin && (
+                <View style={styles.btnsView}>
+                    <TouchableOpacity style={styles.loginBtn}>
+                        <Text style={[styles.btnText, { color: BG_COLOR }]}>Login</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.signUpBtn}>
+                        <Text style={styles.btnText}>Register</Text>
+                    </TouchableOpacity>
+                </View>
+            )}
+
             <View style={styles.separator}>
 
             </View>
-            <FlatList 
-            data={data1}
-            contentContainerStyle={{marginTop:moderateScale(50)}}
-            renderItem={({item,index})=>{
-                return(
-                    <TouchableOpacity style={styles.menuItem}>
-                      <View style={styles.menuItemLeftView}>
-                       <Image source={item.icon} style={styles.menuItemIcon}/>
-                       <Text style={styles.heading}>{item.title}</Text>
-                      </View>
-                      <Image source={require('../../assetsts/images/products.png')} style={styles.menuItemIcon}/>
-                    </TouchableOpacity>
-                )
-            }}/>
+            <FlatList
+                data={data1}
+                contentContainerStyle={{ marginTop: moderateScale(50) }}
+                renderItem={({ item, index }) => {
+                    return (
+                        <TouchableOpacity style={styles.menuItem}>
+                            <View style={styles.menuItemLeftView}>
+                                <Image source={item.icon} style={styles.menuItemIcon} />
+                                <Text style={styles.heading}>{item.title}</Text>
+                            </View>
+                            <Image source={require('../../assetsts/images/right-arrow.png')} style={styles.menuItemIcon} />
+                        </TouchableOpacity>
+                    )
+                }} />
         </View>
     )
 }
@@ -97,31 +122,31 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     btnText: {
-      fontWeight:'500',
-      fontSize:moderateScale(15)
+        fontWeight: '500',
+        fontSize: moderateScale(15)
     },
-    separator:{
-        width:'90%',
-        height:verticalScale(0.5),
-        backgroundColor:'#9e9e9e',
-        alignSelf:'center',
-        marginTop:moderateVerticalScale(20),
-        opacity:0.5
+    separator: {
+        width: '90%',
+        height: verticalScale(0.5),
+        backgroundColor: '#9e9e9e',
+        alignSelf: 'center',
+        marginTop: moderateVerticalScale(20),
+        opacity: 0.5
     },
-    menuItem:{
-        width:'90%',
-        alignSelf:'center',
-        flexDirection:'row',
-        justifyContent:'space-between',
-        alignItems:'center',
-        height:verticalScale(50)
+    menuItem: {
+        width: '90%',
+        alignSelf: 'center',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        height: verticalScale(50)
     },
-    menuItemLeftView:{
-    flexDirection:'row',
-    alignItems:'center', 
+    menuItemLeftView: {
+        flexDirection: 'row',
+        alignItems: 'center',
     },
-    menuItemIcon:{
-        width:scale(24),
-        height:scale(24),  
+    menuItemIcon: {
+        width: scale(20),
+        height: scale(20),
     }
 })
